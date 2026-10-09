@@ -1,0 +1,19 @@
+# Operating System Files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# IDE & Editor Files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Environment & Secret Files
+.env
+.env.*
+*.log
+
+# Workspace & Agent Temporary Files
+scratch/
+.gemini/

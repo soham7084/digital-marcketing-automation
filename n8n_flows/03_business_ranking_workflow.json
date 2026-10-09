@@ -1,0 +1,100 @@
+{
+  "name": "Business Ranking Workflow (Docker Ready)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "business-ranking",
+        "options": {}
+      },
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        100,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://host.docker.internal/fluanc/api/business_ranking/get_n8n_keywords.php",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"user_id\": {{$json.body.user_id}},\n  \"priority_min\": {{$json.body.priority_min}},\n  \"user_location\": \"{{$json.body.user_location}}\",\n  \"business_name\": \"{{$json.body.business_name}}\"\n}",
+        "options": {}
+      },
+      "name": "Fetch User Keywords",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        320,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Map & Evaluate Local Pack Business Ranking per keyword\nconst items = $input.all();\nconst triggerId = $('Webhook').first().json.body.trigger_id;\n\nreturn items.map(item => {\n  const data = item.json;\n  return {\n    json: {\n      trigger_id: triggerId,\n      timestamp: new Date().toISOString(),\n      keyword: data.keyword,\n      cluster: data.cluster,\n      search_intent: data.search_intent,\n      priority: data.priority,\n      number_one_location: data.user_location || 'Local Target Zone',\n      number_one_ranking: '#1 Position',\n      number_one_rating: '4.9 ⭐',\n      top_3_competitors: `${data.business_name} Leaders, Top Rank Agency, Market Pro`,\n      status: 'Top Local Pack Rank'\n    }\n  };\n});"
+      },
+      "name": "Analyze Local Rankings",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        540,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://host.docker.internal/fluanc/api/business_ranking/business_result_append.php",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"trigger_id\": {{$json.trigger_id}},\n  \"timestamp\": \"{{$json.timestamp}}\",\n  \"keyword\": \"{{$json.keyword}}\",\n  \"cluster\": \"{{$json.cluster}}\",\n  \"search_intent\": \"{{$json.search_intent}}\",\n  \"priority\": {{$json.priority}},\n  \"number_one_location\": \"{{$json.number_one_location}}\",\n  \"number_one_ranking\": \"{{$json.number_one_ranking}}\",\n  \"number_one_rating\": \"{{$json.number_one_rating}}\",\n  \"top_3_competitors\": \"{{$json.top_3_competitors}}\",\n  \"status\": \"{{$json.status}}\"\n}",
+        "options": {}
+      },
+      "name": "Send Callback to PHP API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        760,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Fetch User Keywords",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch User Keywords": {
+      "main": [
+        [
+          {
+            "node": "Analyze Local Rankings",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze Local Rankings": {
+      "main": [
+        [
+          {
+            "node": "Send Callback to PHP API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

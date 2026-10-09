@@ -1,0 +1,306 @@
+{
+  "name": "Keyword Research Workflow (Docker Ready)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "keyword-research-free",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -336,
+        16
+      ],
+      "id": "2ce79469-a1d1-4f25-9464-d3c74f35bc10",
+      "name": "Webhook",
+      "webhookId": "95d08a58-c716-4dba-89c7-29a63d50ab7b"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the first item coming from the Webhook\nconst request = items[0].json;\nconst body = request.body || {};\n\nconst seeds = (body.seeds || body.topic || '')\n  .split(',')\n  .map(k => k.trim())\n  .filter(Boolean);\n\nreturn [\n  {\n    json: {\n      trigger_id: body.trigger_id,\n      topic: body.topic || seeds[0] || '',\n      seeds,\n      country_code: body.location || body.country_code || 'US',\n      language_code: body.language_code || 'en'\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -96,
+        16
+      ],
+      "id": "5e4bd2a7-8a62-414f-b8e6-d79f0e3e7df3",
+      "name": "Parse Input"
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = items[0].json;\nconst seeds = (input.seeds && input.seeds.length > 0)\n  ? input.seeds\n  : [input.topic].filter(Boolean);\n\nconst letters = 'abcdefghijklmnopqrstuvwxyz'.split('');\nconst modifiers = ['how to', 'best', 'vs', 'for', 'near me'];\nconst queries = [];\n\nfor (const seed of seeds) {\n  queries.push(seed);\n  for (const l of letters) {\n    queries.push(`${seed} ${l}`);\n  }\n  for (const m of modifiers) {\n    queries.push(`${seed} ${m}`);\n  }\n}\n\nreturn queries.map(q => ({\n  json: {\n    query: q,\n    country_code: input.country_code,\n    language_code: input.language_code\n  }\n}));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        96,
+        16
+      ],
+      "id": "67d828d4-5075-4737-807b-b57ab0ede25e",
+      "name": "Build Autocomplete Queries"
+    },
+    {
+      "parameters": {
+        "batchSize": 20,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        352,
+        -128
+      ],
+      "id": "5e233d79-bddd-4a15-9c83-0091e1a05b72",
+      "name": "Split Queries"
+    },
+    {
+      "parameters": {
+        "url": "https://suggestqueries.google.com/complete/search",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "client",
+              "value": "firefox"
+            },
+            {
+              "name": "hl",
+              "value": "={{ $json.language_code || \"en\" }}"
+            },
+            {
+              "name": "q",
+              "value": "={{ $json.query }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        576,
+        128
+      ],
+      "id": "fccea705-b608-4619-b55c-f2aa2951fde6",
+      "name": "Autocomplete"
+    },
+    {
+      "parameters": {
+        "jsCode": "const out = [];\nfor (const item of items) {\n  const raw = item.json.data;\n  let res;\n  if (typeof raw === 'string') {\n    res = JSON.parse(raw);\n  } else {\n    res = raw || [];\n  }\n  const suggestions = (Array.isArray(res) && Array.isArray(res[1])) ? res[1] : [];\n  for (const s of suggestions) {\n    out.push({\n      json: {\n        keyword: s\n      }\n    });\n  }\n}\nreturn out;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        880,
+        128
+      ],
+      "id": "0a593c40-0c2c-4974-bc94-01200404be5d",
+      "name": "Flatten Suggestions"
+    },
+    {
+      "parameters": {
+        "jsCode": "const allItems = $items('Flatten Suggestions');\nconst map = {};\nfor (const i of allItems) {\n  const kw = (i.json.keyword || '').trim();\n  if (!kw) continue;\n  const key = kw.toLowerCase();\n  map[key] = kw;\n}\nreturn Object.values(map).map(kw => ({\n  json: { keyword: kw }\n}));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1184,
+        -128
+      ],
+      "id": "e2e6a7f0-2abe-429f-8ae9-27e8ffc23ac7",
+      "name": "Deduplicate Keywords"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.keyword }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "You are an SEO keyword classifier. Return only valid JSON with exactly these fields: keyword, cluster, search_intent, priority. Rules: - keyword must be a string - cluster must be a short string label - search_intent must be one of: Informational, Commercial, Transactional, Navigational - priority must be an integer from 1 to 5. Do not add explanation or markdown."
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        1344,
+        -128
+      ],
+      "id": "f437e4bb-df78-4e53-bafd-277993bef3bb",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "let parsed;\ntry {\n  parsed = JSON.parse($json.text);\n} catch (e) {\n  parsed = {\n    keyword: $json.keyword || 'Keyword',\n    cluster: 'General',\n    search_intent: 'Informational',\n    priority: 3\n  };\n}\nconst countryCode = $('Webhook').first().json.body.location || $('Webhook').first().json.body.country_code || 'IN';\nconst now = new Date();\nconst localDate = `${String(now.getDate()).padStart(2, '0')}/${String(now.getMonth() + 1).padStart(2, '0')}/${now.getFullYear()}, ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;\n\nreturn {\n  keyword: parsed.keyword,\n  cluster: parsed.cluster,\n  search_intent: parsed.search_intent,\n  priority: parsed.priority,\n  get_time: localDate\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1648,
+        -128
+      ],
+      "id": "4d23e1f3-3ad5-443a-9dba-d1c91e941987",
+      "name": "parse the LLM output"
+    },
+    {
+      "parameters": {
+        "model": "qwen2.5:latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        1488,
+        64
+      ],
+      "id": "16862f11-88a4-4455-bf44-9999c2aa9938",
+      "name": "Ollama Chat Model"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://host.docker.internal/fluanc/api/keyword/keyword_result_append.php",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"trigger_id\": {{$('Webhook').first().json.body.trigger_id}},\n  \"results\": {{JSON.stringify($input.all().map(i => i.json))}}\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1936,
+        -96
+      ],
+      "id": "efd288be-605e-4cf0-ba78-aa43078b0387",
+      "name": "HTTP Request"
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Parse Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Input": {
+      "main": [
+        [
+          {
+            "node": "Build Autocomplete Queries",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Autocomplete Queries": {
+      "main": [
+        [
+          {
+            "node": "Split Queries",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Queries": {
+      "main": [
+        [
+          {
+            "node": "Deduplicate Keywords",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Autocomplete",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Autocomplete": {
+      "main": [
+        [
+          {
+            "node": "Flatten Suggestions",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Flatten Suggestions": {
+      "main": [
+        [
+          {
+            "node": "Split Queries",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Deduplicate Keywords": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "parse the LLM output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "parse the LLM output": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true
+}

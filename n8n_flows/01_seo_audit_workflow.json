@@ -1,0 +1,95 @@
+{
+  "name": "SEO Audit Workflow (Docker Ready)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "seo-audit-1",
+        "options": {}
+      },
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        100,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extract incoming webhook payload fields\nconst body = $json.body || {};\nreturn [{\n  json: {\n    trigger_id: body.trigger_id,\n    audit_input_id: body.audit_input_id,\n    user_id: body.user_id,\n    page_url: body.page_url || '',\n    email: body.email || '',\n    run_time: body.run_time || null\n  }\n}];"
+      },
+      "name": "Parse Audit Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        320,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Simulated / Crawler output formatting for SEO audit results\nconst input = $json;\nreturn [{\n  json: {\n    trigger_id: input.trigger_id,\n    page_url: input.page_url,\n    performance_score: 88,\n    seo_score: 92,\n    accessibility_score: 85,\n    best_practices_score: 90,\n    total_issues: 4,\n    critical_issues: 1,\n    audit_summary: 'Target page analyzed successfully. Moderate accessibility improvements recommended.',\n    detailed_results: [\n      { issue: 'Missing alt tags on images', impact: 'Medium', recommendation: 'Add descriptive alt text to img elements.' },\n      { issue: 'Unoptimized render-blocking resources', impact: 'High', recommendation: 'Defer non-critical JavaScript files.' }\n    ]\n  }\n}];"
+      },
+      "name": "Generate Audit Scores",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        540,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://host.docker.internal/fluanc/api/seo_audit/seo_result_append.php",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"trigger_id\": {{$json.trigger_id}},\n  \"page_url\": \"{{$json.page_url}}\",\n  \"performance_score\": {{$json.performance_score}},\n  \"seo_score\": {{$json.seo_score}},\n  \"accessibility_score\": {{$json.accessibility_score}},\n  \"best_practices_score\": {{$json.best_practices_score}},\n  \"total_issues\": {{$json.total_issues}},\n  \"critical_issues\": {{$json.critical_issues}},\n  \"audit_summary\": \"{{$json.audit_summary}}\",\n  \"detailed_results\": {{$json.detailed_results}}\n}",
+        "options": {}
+      },
+      "name": "Send Callback to PHP API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        760,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Parse Audit Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Audit Input": {
+      "main": [
+        [
+          {
+            "node": "Generate Audit Scores",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Audit Scores": {
+      "main": [
+        [
+          {
+            "node": "Send Callback to PHP API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

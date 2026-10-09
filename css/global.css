@@ -1,0 +1,1346 @@
+/* ===========================
+   Google Font
+=========================== */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght=300;400;500;600;700;800&display=swap');
+
+/* ===========================
+   Color Themes (CSS Variables)
+=========================== */
+:root {
+    /* Dark Theme (Default) - Based on image_46429c.png */
+    --bg-main: #0a0f1d;
+    /* Very deep navy background */
+    --bg-surface: #121b2e;
+    /* Card/container surface blue */
+    --bg-navbar: #090d1a;
+    /* Top navigation header */
+    --bg-input: #1b263e;
+    /* Interactive elements / profile pill */
+    --bg-badge: #16223f;
+    /* "AI AUTOMATION FRAMEWORK" tag background */
+
+    --text-primary: #ffffff;
+    /* Bright white for primary titles */
+    --text-muted: #64748b;
+    /* Muted gray-blue for description paragraphs */
+    --text-nav: #ffffff;
+    --text-label: #94a3b8;
+    --text-placeholder: #475569;
+
+    /* Vibrant Electric Blues from the UI */
+    --accent-blue: #3b82f6;
+    --accent-blue-hover: #2563eb;
+    --accent-blue-btn: #1d4ed8;
+    --accent-span: #3b82f6;
+    /* Blue for text highlights/spans */
+    --glow-color: rgba(59, 130, 246, 0.15);
+    --border-color: #1e293b;
+    /* Dark slate border */
+    --sidebar-width: 260px;
+}
+
+.light-theme {
+    /* Light Theme Variations - Based on image_4642f9.png */
+    --bg-main: #f8fafc;
+    /* Off-white canvas background */
+    --bg-surface: #ffffff;
+    /* Pure white card backgrounds */
+    --bg-navbar: #ffffff;
+    /* Pure white top navigation header */
+    --bg-input: #f1f5f9;
+    /* Dropdown/Profile pill background */
+    --bg-badge: #e2e8f0;
+    /* Soft gray badge background */
+
+    --text-primary: #0f172a;
+    /* Deep navy/black for high contrast typography */
+    --text-muted: #64748b;
+    /* Mid-tone gray for readable text descriptions */
+    --text-nav: #0f172a;
+    --text-label: #334155;
+    --text-placeholder: #94a3b8;
+
+    --accent-blue: #3b82f6;
+    --accent-blue-hover: #2563eb;
+    --accent-blue-btn: #3b82f6;
+    --accent-span: #2563eb;
+    --glow-color: rgba(59, 130, 246, 0.05);
+    --border-color: #e2e8f0;
+    /* Soft clean border line */
+}
+
+/* ===========================
+   Global
+=========================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--bg-main);
+    color: var(--text-primary);
+    overflow-x: hidden;
+    transition: background 0.3s, color 0.3s;
+}
+
+a {
+    text-decoration: none;
+}
+
+.container {
+    max-width: 1200px;
+}
+
+/* ===========================
+   Navbar & Toggle Icons
+=========================== */
+.navbar {
+    background: var(--bg-navbar);
+    border-bottom: 1px solid var(--border-color);
+    transition: background 0.3s, border-color 0.3s;
+}
+
+.logo {
+    color: var(--text-primary) !important;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.nav-link {
+    color: var(--text-nav) !important;
+    margin: 0 10px;
+    transition: .3s;
+}
+
+.nav-link:hover {
+    color: var(--accent-blue) !important;
+}
+
+/* Icon Visibility Management */
+.light-theme .dark-icon {
+    display: block;
+}
+
+.light-theme .light-icon {
+    display: none;
+}
+
+body:not(.light-theme) .dark-icon {
+    display: none;
+}
+
+body:not(.light-theme) .light-icon {
+    display: block;
+}
+
+.login-btn {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+/* Updated Button class naming to match UI accents */
+.btn-warning,
+.btn-primary-action {
+    background: var(--bg-input);
+    border: 1px solid var(--accent-blue);
+    color: var(--accent-blue);
+    border-radius: 6px;
+    transition: 0.2s ease-in-out;
+}
+
+.btn-warning:hover,
+.btn-primary-action:hover {
+    background: var(--accent-blue);
+    color: #fff;
+}
+
+/* ===========================
+   Hero
+=========================== */
+.hero-section {
+    padding: 90px 0 80px;
+    position: relative;
+}
+
+/* Dynamic Glow Effect matching image_46429c.png */
+.hero-section::before {
+    content: "";
+    position: absolute;
+    width: 550px;
+    height: 550px;
+    background: var(--accent-blue);
+    opacity: .08;
+    filter: blur(140px);
+    border-radius: 50%;
+    top: 140px;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: background 0.3s;
+}
+
+.hero-box {
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+    padding: 60px;
+    border-radius: 22px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+    transition: background 0.3s, border-color 0.3s;
+}
+
+/* Pill Badge styling based exactly on the images */
+.hero-badge {
+    background: var(--bg-badge);
+    color: var(--accent-blue);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    padding: 6px 16px;
+    border-radius: 50px;
+    font-size: 12px;
+    display: inline-block;
+    transition: background 0.3s, color 0.3s;
+}
+
+/* Title */
+.hero-title {
+    font-size: 62px;
+    font-weight: 800;
+    line-height: 1.15;
+    margin-bottom: 20px;
+}
+
+.hero-title span {
+    color: var(--accent-span);
+}
+
+.hero-text {
+    color: var(--text-muted);
+    max-width: 650px;
+    margin: auto;
+    line-height: 1.8;
+}
+
+/* ===========================
+   Form Elements
+=========================== */
+.form-label {
+    color: var(--text-label);
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.input-group {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.input-group-text {
+    background: var(--bg-input);
+    color: var(--text-placeholder);
+    border: none;
+}
+
+.form-control {
+    background: var(--bg-input);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    height: 58px;
+    box-shadow: none;
+    transition: background 0.3s, color 0.3s;
+}
+
+.form-control:focus {
+    background: var(--bg-input);
+    border-color: var(--accent-blue);
+    color: var(--text-primary);
+    box-shadow: none;
+}
+
+.form-control::placeholder {
+    color: var(--text-placeholder);
+}
+
+.hero-btn {
+    height: 58px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.hero-note {
+    color: var(--text-placeholder);
+    font-size: 14px;
+}
+
+/* ===========================
+   Trust Indicators
+=========================== */
+.trust-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.trust-item i {
+    color: var(--accent-blue);
+    font-size: 18px;
+}
+
+/* ===========================
+   Feature Cards
+=========================== */
+.feature-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: 18px;
+    padding: 30px;
+    transition: .35s;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent-blue);
+    box-shadow: 0 10px 25px rgba(59, 130, 246, 0.1);
+}
+
+.icon-box {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--bg-input);
+    color: var(--accent-blue);
+    font-size: 22px;
+    margin-bottom: 20px;
+    border: 1px solid var(--border-color);
+}
+
+.feature-card h4 {
+    font-size: 22px;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.feature-card p {
+    color: var(--text-muted);
+    line-height: 1.8;
+    margin-bottom: 0;
+}
+
+/* ==========================================================================
+   PROFILE DROPDOWN OVERRIDES (Matches Screenshot)
+   ========================================================================== */
+
+/* The Dropdown Toggle Button */
+.profile-dropdown-btn {
+    background: transparent !important;
+    border: none !important;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px;
+    cursor: pointer;
+}
+
+/* Hide the default Bootstrap dropdown arrow */
+.profile-dropdown-btn::after {
+    display: none;
+}
+
+/* The custom downward chevron */
+.profile-dropdown-btn i.bi-chevron-down {
+    color: var(--text-muted);
+    font-size: 12px;
+    margin-left: 4px;
+}
+
+/* Rounded Avatar Initials Circle */
+.avatar-circle {
+    width: 42px;
+    height: 42px;
+    background: var(--bg-input);
+    color: var(--text-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: 0.5px;
+    border: 1px solid var(--border-color);
+}
+
+/* Dropdown Menu Container (Forced White Context per image) */
+.profile-dropdown-menu {
+    background: #ffffff !important; 
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    padding: 8px 0;
+    min-width: 200px;
+    margin-top: 15px !important;
+}
+
+/* Dropdown List Items */
+.profile-dropdown-menu .dropdown-item {
+    color: #334155 !important; 
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+/* Icons inside the dropdown */
+.profile-dropdown-menu .dropdown-item i {
+    font-size: 16px;
+    color: #475569;
+}
+
+/* Hover effects for dropdown items */
+.profile-dropdown-menu .dropdown-item:hover {
+    background: #f1f5f9 !important;
+    color: #0f172a !important;
+}
+
+/* Specific styling for the Log Out item */
+.profile-dropdown-menu .dropdown-item.text-danger i {
+    color: inherit;
+}
+
+/* User Info Header Block (if you choose to keep it) */
+.profile-dropdown-menu .border-bottom {
+    border-bottom: 1px solid #e2e8f0 !important;
+}
+
+.profile-dropdown-menu strong {
+    color: #0f172a;
+}
+
+/* ===========================
+   Navbar Component Updates
+=========================== */
+
+/* Theme Toggle Button Styling */
+.theme-toggle-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    font-size: 20px;
+    cursor: pointer;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+}
+
+.theme-toggle-btn:hover {
+    color: var(--accent-blue);
+}
+
+/* User Profile Dropdown Pill matching image_46429c.png */
+.profile-pill {
+    background: var(--bg-input) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-primary) !important;
+    padding: 6px 16px 6px 6px !important;
+    border-radius: 50px !important;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+/* Rounded Avatar Initials Circle */
+.avatar-initials {
+    width: 32px;
+    height: 32px;
+    background: var(--accent-blue);
+    color: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+}
+
+/* Container rules to keep elements side-by-side */
+.dashboard-wrapper {
+    display: flex;
+    width: 100vw;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Sidebar default state: visible and aligned to the left side */
+.sidebar {
+    width: var(--sidebar-width);
+    background: var(--bg-surface);
+    border-right: 1px solid var(--border-color);
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1040;
+    display: flex;
+    flex-direction: column;
+    /* Smooth transitions for toggling states */
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.logo-text {
+    color: var(--text-primary);
+    font-size: 22px;
+    transition: color 0.3s ease;
+    /* Makes the transition smooth when toggling */
+}
+
+/*.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: 4px;
+}*/
+
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Takes up remaining space */
+    gap: 4px;
+    overflow-y: auto; /* Enables vertical scrolling */
+    overflow-x: hidden; /* Prevents horizontal scroll glitches */
+    padding-bottom: 30px; /* Gives breathing room at the bottom */
+}
+
+/* --- Optimized Custom Scrollbar for Sidebar --- */
+.sidebar-menu::-webkit-scrollbar {
+    width: 5px;
+}
+
+.sidebar-menu::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar-menu::-webkit-scrollbar-thumb {
+    background-color: var(--border-color); /* Adapts to light/dark theme */
+    border-radius: 10px;
+}
+
+.sidebar-menu::-webkit-scrollbar-thumb:hover {
+    background-color: var(--text-muted); /* Adapts to light/dark theme */
+}
+
+.sidebar-menu a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    color: var(--text-muted);
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+}
+
+.sidebar-menu a:hover,
+.sidebar-menu a.active {
+    background: var(--bg-input);
+    color: var(--accent-blue);
+}
+
+/* --- MAIN CANVAS CONTENT CONTROLS --- */
+.main-content {
+    flex-grow: 1;
+    min-width: 0;
+    /* Leaves margin space for the fixed sidebar position */
+    padding-left: var(--sidebar-width);
+    transition: padding-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Content panel handles its padding dynamically based on the sidebar */
+.main-content {
+    flex-grow: 1;
+    min-width: 0;
+    padding-left: 260px;
+    transition: padding-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Collapsed Rules (Toggled via JavaScript) */
+.sidebar.collapsed {
+    transform: translateX(-260px);
+}
+
+.main-content.expanded {
+    padding-left: 0;
+}
+
+
+/* ==========================================================================
+   DETAILED TECHNICAL REPORT PANEL COMPONENT STYLING
+   ========================================================================== */
+
+.report-container {
+    background: var(--bg-surface);
+    color: var(--text-primary);
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.report-main-title {
+    font-size: 28px;
+    letter-spacing: -0.5px;
+}
+
+/* Badge background tracking modern semi-transparencies */
+.report-time-badge {
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text-muted);
+    font-size: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.light-theme .report-time-badge {
+    background: rgba(0, 0, 0, 0.04);
+}
+
+.section-title {
+    font-size: 18px;
+    letter-spacing: 0.5px;
+    color: #58a6ff;
+    /* Clean tech blue */
+}
+
+/* Specific styling for the orange content section header */
+.orange-heading {
+    color: #ff8a3d !important;
+}
+
+.small-title {
+    font-size: 13px;
+    letter-spacing: 0.8px;
+    color: var(--text-label);
+    margin-bottom: 6px;
+}
+
+.section-lead {
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.report-text-block p {
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* Custom highlighted formatting code blocks */
+.report-text-block code {
+    background: var(--bg-input);
+    color: var(--accent-blue);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: monospace;
+}
+
+/* Individual grid cards matrix system variables */
+.audit-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-color);
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.light-theme .audit-card {
+    background: rgba(0, 0, 0, 0.01);
+}
+
+.audit-card:hover {
+    border-color: rgba(59, 130, 246, 0.3);
+}
+
+.card-title-text {
+    font-size: 15px;
+    color: var(--text-primary);
+}
+
+/* Re-run utility button pill properties */
+.btn-rerun {
+    background: #1b263e;
+    border: 1px solid var(--border-color);
+    color: #ffffff;
+    padding: 10px 28px;
+    font-size: 14px;
+    transition: 0.2s ease-in-out;
+}
+
+.light-theme .btn-rerun {
+    background: #f1f5f9;
+    color: #0f172a;
+}
+
+.btn-rerun:hover {
+    background: var(--accent-blue);
+    color: #ffffff;
+    border-color: var(--accent-blue);
+    transform: translateY(-2px);
+}
+
+
+/* ==========================================================================
+   GOOGLE KEYWORD RESEARCH ENGINE CONTAINER INTERFACES
+   ========================================================================== */
+
+/* Custom Textarea Override rules */
+textarea.form-control {
+    height: auto;
+    resize: none;
+}
+
+/* Custom Dropdown select handling layout overrides */
+select.form-select.form-control {
+    padding-right: 2.5rem;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2394a3b8' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 12px 12px;
+    appearance: none;
+}
+
+.light-theme select.form-select.form-control {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23475569' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+}
+
+/* Automation Card Nested Panel Properties */
+.automation-card {
+    background: rgba(255, 255, 255, 0.01);
+    border: 1px solid var(--border-color);
+}
+
+.light-theme .automation-card {
+    background: rgba(0, 0, 0, 0.01);
+}
+
+/* Form Custom Toggles Switches styling tweaks */
+.form-switch .form-check-input {
+    width: 2.5em;
+    height: 1.4em;
+    background-color: #334155;
+    border-image: none;
+    border: none;
+    cursor: pointer;
+}
+
+.form-switch .form-check-input:checked {
+    background-color: #ff7b2f;
+    /* Orange accent matching the original theme mock */
+}
+
+/* Vibrant Split Orange-Pink Actions Button Gradient */
+.btn-primary-gradient {
+    background: linear-gradient(135deg, #ff7b2f 0%, #ff4f9b 50%, #d23b9b 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 10px;
+    font-size: 16px;
+    letter-spacing: 0.3px;
+    box-shadow: 0 4px 15px rgba(255, 79, 155, 0.2);
+    transition: transform 0.2s ease, opacity 0.2s ease !important;
+}
+
+.btn-primary-gradient:hover {
+    transform: translateY(-2px);
+    opacity: 0.95;
+    color: #ffffff !important;
+}
+
+/* Statistics Live Activity Indicator Pulsing Status Dot */
+.status-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #10b981;
+    border-radius: 50%;
+    display: inline-block;
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+    animation: pulseStatus 2s infinite;
+}
+
+/* Fix text overlap layout collision properties */
+.form-check.form-switch {
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-left: 0;
+    /* Clear Bootstrap left padding push */
+}
+
+/* Position the actual switch pill custom handle widget */
+.form-check.form-switch .form-check-input {
+    position: relative;
+    margin-left: 0;
+    /* Reset negative default margins */
+    flex-shrink: 0;
+    /* Prevent the switch capsule from compressing */
+    width: 2.5em;
+    height: 1.4em;
+    background-color: #334155;
+    border: none;
+    cursor: pointer;
+}
+
+.form-switch .form-check-input:checked {
+    background-color: #ff7b2f;
+}
+
+/* Ensure label naturally drops next to the switch without overlapping boundaries */
+.form-check.form-switch .form-check-label {
+    margin-left: 10px;
+    /* Clean tracking break space */
+    white-space: nowrap;
+    /* Prevent sudden broken text line wrapping */
+}
+
+@keyframes pulseStatus {
+    0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+    }
+
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+    }
+
+    100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+    }
+}
+
+/* Small uppercase labels at the top */
+.stat-label {
+    color: var(--text-label) !important;
+    transition: color 0.3s ease;
+}
+
+/* Big counter numbers (12,450 / 18 / 84,920) */
+.stat-value {
+    color: var(--accent-blue) !important;
+    /* Dynamically maps to dark-blue or light-blue accent */
+    transition: color 0.3s ease;
+}
+
+/* "Active" status text */
+.stat-status {
+    color: #10b981 !important;
+    /* Stays emerald green in dark mode for visibility */
+    transition: color 0.3s ease;
+}
+
+/* Subtle shade tweak to make the green text easier to read on white backgrounds */
+.light-theme .stat-status {
+    color: #059669 !important;
+    /* Slightly deeper green for contrast against light mode background */
+}
+
+.task-badge {
+    /* Dark Theme Styles (Default) */
+    background-color: rgba(239, 68, 68, 0.15) !important;
+    /* Semi-transparent vivid red */
+    color: #ef4444 !important;
+    /* Bright crimson red for crisp legibility */
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Light Theme Styles Override */
+.light-theme .task-badge {
+    background-color: #fee2e2 !important;
+    /* Soft, solid light-red background */
+    color: #991b1b !important;
+    /* Deep burgundy red for strong text contrast on light canvas */
+    border: 1px solid #fca5a5;
+}
+
+/* ==========================================================================
+   KEYWORD DATA STRUCTURE RESULTS GRID TABLE STYLING
+   ========================================================================== */
+
+.custom-report-table {
+    background: transparent !important;
+}
+
+.custom-report-table thead tr {
+    background-color: transparent;
+    border-bottom: 2px solid var(--border-color) !important;
+}
+
+.custom-report-table th {
+    color: var(--text-placeholder) !important;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    background: transparent !important;
+}
+
+.custom-report-table td {
+    padding-top: 1.15rem;
+    padding-bottom: 1.15rem;
+    font-size: 14px;
+    color: var(--text-primary);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03) !important;
+    background: transparent !important;
+}
+
+.light-theme .custom-report-table td {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04) !important;
+}
+
+/* Base structural highlights for keyword label columns */
+.keyword-text-cell {
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+/* Cluster block indicator bubbles styling */
+.cluster-pill {
+    background: #1e293b;
+    color: #94a3b8;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.light-theme .cluster-pill {
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+/* Custom dynamic Search Intent Badge system rules */
+.intent-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 50px;
+    border: 1px solid transparent;
+}
+
+.intent-pill::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+/* Intent Intent Variations (Commercial / Transactional / Informational) */
+.intent-commercial {
+    background: rgba(168, 85, 247, 0.08);
+    color: #c084fc;
+    border-color: rgba(168, 85, 247, 0.15);
+}
+
+.intent-commercial::before {
+    background-color: #a855f7;
+}
+
+.intent-transactional {
+    background: rgba(59, 130, 246, 0.08);
+    color: #60a5fa;
+    border-color: rgba(59, 130, 246, 0.15);
+}
+
+.intent-transactional::before {
+    background-color: #3b82f6;
+}
+
+.intent-informational {
+    background: rgba(249, 115, 22, 0.08);
+    color: #fdba74;
+    border-color: rgba(249, 115, 22, 0.15);
+}
+
+.intent-informational::before {
+    background-color: #f97316;
+}
+
+/* Light theme variants for intent pills */
+.light-theme .intent-commercial {
+    background: #f3e8ff;
+    color: #6b21a8;
+}
+
+.light-theme .intent-transactional {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.light-theme .light-theme .intent-informational {
+    background: #ffedd5;
+    color: #9a3412;
+}
+
+/* Numeric circle indicators layout configurations */
+.priority-circle {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: #ffffff !important;
+}
+
+.priority-high {
+    background-color: #b91c1c;
+}
+
+/* Red Badge */
+.priority-med {
+    background-color: #374151;
+}
+
+/* Dark Slate Gray Badge */
+.light-theme .priority-med {
+    background-color: #64748b;
+}
+
+/* Custom Table Pagination Controls */
+.pagination-custom .page-link {
+    background: var(--bg-badge);
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    font-size: 13px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    transition: 0.2s;
+}
+
+.pagination-custom .page-item.active .page-link {
+    background: var(--accent-blue) !important;
+    color: #ffffff !important;
+    border-color: var(--accent-blue) !important;
+}
+
+.pagination-custom .page-link:hover {
+    background: var(--bg-input);
+    color: var(--text-primary);
+}
+
+/* ==========================================================================
+   POSTER MAKER CSS (Theme-Toggle Compatible)
+   ========================================================================== */
+
+/* Base Dashboard Theme Overrides */
+body[data-section="poster"] {
+    background: var(--bg-main);
+    color: var(--text-primary);
+    font-family: 'Poppins', sans-serif;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.text-muted {
+    color: var(--text-muted) !important;
+    transition: color 0.3s ease;
+}
+
+/* Central Card Box Configuration */
+.config-container {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+/* Drag & Drop File Upload Zone */
+.upload-zone {
+    border: 2px dashed var(--border-color);
+    background-color: var(--bg-main);
+    border-radius: 0.75rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.upload-zone:hover {
+    border-color: var(--accent-blue);
+    background-color: var(--glow-color);
+}
+
+/* Form Controls Restyling */
+.config-container .form-label {
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--text-label);
+    margin-bottom: 0.5rem;
+    transition: color 0.3s ease;
+}
+
+.config-container .form-control,
+.config-container .form-select {
+    background-color: var(--bg-input);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.config-container .form-control:focus,
+.config-container .form-select:focus {
+    background-color: var(--bg-input);
+    border-color: var(--accent-blue);
+    color: var(--text-primary);
+    box-shadow: 0 0 0 3px var(--glow-color);
+}
+
+.config-container .form-control::placeholder {
+    color: var(--text-placeholder);
+}
+
+/* Feature Informational Summary Blocks */
+.info-feature-card {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    height: 100%;
+    transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.info-feature-card .icon-wrapper {
+    color: var(--accent-blue);
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.info-feature-card h5 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+    transition: color 0.3s ease;
+}
+
+.info-feature-card p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin: 0;
+    transition: color 0.3s ease;
+}
+
+/* Action Button Profiles */
+.btn-submit-automation {
+    background-color: var(--accent-blue-btn);
+    color: #ffffff;
+    font-weight: 700;
+    border: none;
+    padding: 0.85rem 2rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.btn-submit-automation:hover {
+    background-color: var(--accent-blue-hover);
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+.btn-cancel-automation {
+    background-color: var(--bg-input);
+    color: var(--text-muted);
+    border: 1px solid var(--border-color);
+    padding: 0.85rem 2rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.btn-cancel-automation:hover {
+    background-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+/* ==========================================================================
+   FIX: Date Picker Visibility & Consistency (Global)
+   ========================================================================== */
+
+/* The wrapper container needs to flex to hold the input correctly */
+#dateFilterWrapper {
+    background-color: var(--bg-input) !important;
+    border: 2px solid var(--border-color) !important;
+    border-radius: 8px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+}
+
+/* The actual date input styling */
+input[type="date"]#filterDate {
+    background: transparent !important;
+    color: var(--text-primary) !important;
+    border: none !important;
+    height: 100%;
+    width: 100%;
+    font-size: 14px;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Fix the calendar icon color for both light and dark mode */
+input[type="date"]#filterDate::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    filter: invert(0); /* Default for dark mode */
+    opacity: 0.6;
+}
+
+/* Invert the icon color automatically when in light-theme */
+.light-theme input[type="date"]#filterDate::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+}
+
+/* Ensure the text is readable when the user selects a date */
+input[type="date"]#filterDate::-webkit-datetime-edit-text,
+input[type="date"]#filterDate::-webkit-datetime-edit-month-field,
+input[type="date"]#filterDate::-webkit-datetime-edit-day-field,
+input[type="date"]#filterDate::-webkit-datetime-edit-year-field {
+    color: var(--text-primary);
+}
+
+/*chart intent style*/
+/* In global.css */
+.intent-navigational {
+    background: rgba(14, 165, 233, 0.08) !important;
+    color: #38bdf8 !important;
+    border: 1px solid rgba(14, 165, 233, 0.15) !important;
+}
+
+.intent-navigational::before {
+    background-color: #0ea5e9 !important;
+}
+
+/* ===========================
+   Responsive Settings
+=========================== */
+
+@media (min-width: 993px) {
+
+    /* Slide sidebar fully to the left out of frame */
+    .sidebar.collapsed {
+        transform: translateX(calc(-1 * var(--sidebar-width)));
+    }
+
+    /* Let content area snap back to reclaim full monitor width area */
+    .main-content.expanded {
+        padding-left: 0;
+    }
+}
+
+@media (max-width: 992px) {
+    .main-content {
+        padding-left: 0;
+        /* Content takes full screen width by default on mobile */
+    }
+
+    .sidebar {
+        /* Hide sidebar off-screen by default on mobile */
+        transform: translateX(calc(-1 * var(--sidebar-width)));
+        box-shadow: none;
+    }
+
+    /* Toggled Mobile Drawer State: Slides over content like an overlay drawer */
+    .sidebar.show-mobile {
+        transform: translateX(0);
+        box-shadow: 10px 0 30px rgba(0, 0, 0, 0.25);
+    }
+}
+
+@media(max-width:991px) {
+    .hero-box {
+        padding: 40px 30px;
+    }
+
+    .hero-title {
+        font-size: 46px;
+    }
+
+    .navbar-nav {
+        text-align: center;
+        margin: 25px 0;
+    }
+}
+
+@media(max-width:768px) {
+    .hero-section {
+        padding: 70px 0;
+    }
+
+    .hero-title {
+        font-size: 36px;
+    }
+
+    .hero-box {
+        padding: 30px 20px;
+    }
+
+    .hero-text {
+        font-size: 15px;
+    }
+
+    .hero-btn {
+        margin-top: 10px;
+    }
+
+    .feature-card {
+        text-align: center;
+    }
+
+    .icon-box {
+        margin: auto auto 20px;
+    }
+}
+
+@media(max-width:576px) {
+    .logo {
+        font-size: 24px;
+    }
+
+    .hero-title {
+        font-size: 30px;
+    }
+
+    .hero-badge {
+        font-size: 11px;
+    }
+
+    .hero-box {
+        padding: 25px 15px;
+    }
+
+    .form-control {
+        height: 52px;
+    }
+
+    .hero-btn {
+        height: 52px;
+    }
+}

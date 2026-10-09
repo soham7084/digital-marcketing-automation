@@ -1,0 +1,274 @@
+:root {
+    --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    
+    /* LIGHT MODE STYLES */
+    --bg-main: #f8fafc;
+    --bg-card: #ffffff;
+    --border-color: #e2e8f0;
+    --text-primary: #0f172a;
+    --text-secondary: #64748b;
+    --brand-blue: #2563eb;
+    --brand-blue-light: #eff6ff;
+    --nav-bg: #ffffff;
+    --dropdown-hover: #f1f5f9;
+}
+
+[data-theme="dark"] {
+    /* DARK MODE STYLES */
+    --bg-main: #0b0f19;
+    --bg-card: #151f32;
+    --border-color: #22314d;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --brand-blue: #3b82f6;
+    --brand-blue-light: rgba(59, 130, 246, 0.15);
+    --nav-bg: #111a2e;
+    --dropdown-hover: #1e293b;
+}
+
+body {
+    font-family: var(--font-stack);
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    overflow-x: hidden;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* --- THEME TOGGLE BUTTON --- */
+.theme-toggle-btn {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.theme-toggle-btn:hover {
+    color: var(--brand-blue);
+    background-color: var(--brand-blue-light);
+    border-color: var(--brand-blue);
+}
+
+/* --- ADVANCED SIDEBAR SYSTEM --- */
+.sidebar {
+    width: 260px;
+    background-color: var(--bg-card);
+    border-right: 1px solid var(--border-color);
+    min-height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sidebar.collapsed {
+    left: -260px;
+}
+
+.sidebar-logo {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--brand-blue);
+    letter-spacing: -0.025em;
+}
+
+.menu-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--text-secondary);
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.menu-link:hover {
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+}
+
+.menu-link.active {
+    background-color: var(--brand-blue-light);
+    color: var(--brand-blue);
+    font-weight: 600;
+}
+
+/* --- MAIN LAYOUT TUNING --- */
+.main-content {
+    margin-left: 260px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    min-height: 100vh;
+}
+
+.main-content.expanded {
+    margin-left: 0;
+}
+
+.navbar {
+    background-color: var(--nav-bg) !important;
+    border-color: var(--border-color) !important;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.navbar-text {
+    color: var(--text-primary) !important;
+}
+
+/* --- PREMIUM MINIMAL CARDS --- */
+.custom-card {
+    background-color: var(--bg-card) !important;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.01);
+    transition: transform 0.2s, border-color 0.2s, background-color 0.3s ease;
+}
+
+.ai-card:hover {
+    border-color: var(--brand-blue);
+    transform: translateY(-2px);
+}
+
+.icon-box {
+    width: 42px;
+    height: 42px;
+    background-color: var(--brand-blue-light);
+    color: var(--brand-blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.custom-badge {
+    background-color: var(--brand-blue-light);
+    color: var(--brand-blue);
+    padding: 0.25rem 0.75rem;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Quick Action Buttons */
+.action-btn-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    padding: 1rem;
+    border-radius: 10px;
+    color: var(--text-primary);
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s, background-color 0.3s ease;
+}
+
+.action-btn-card:hover {
+    border-color: var(--brand-blue);
+    background-color: var(--brand-blue-light);
+    color: var(--brand-blue);
+}
+
+/* --- TOPNAV PROFILE DROPDOWN STYLES --- */
+.profile-dropdown-btn {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary) !important;
+    padding: 0.4rem 0.8rem;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.profile-dropdown-btn:hover, .profile-dropdown-btn[aria-expanded="true"] {
+    background-color: var(--brand-blue-light);
+    border-color: var(--brand-blue);
+    color: var(--brand-blue) !important;
+}
+
+.avatar-circle {
+    width: 28px;
+    height: 28px;
+    background-color: var(--brand-blue);
+    color: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.profile-dropdown-menu {
+    background-color: var(--bg-card) !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1) !important;
+    border-radius: 12px !important;
+    padding: 0.5rem !important;
+    min-width: 220px !important;
+}
+
+.profile-dropdown-menu .dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 0.75rem !important;
+    border-radius: 6px;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.profile-dropdown-menu .dropdown-item:hover {
+    background-color: var(--dropdown-hover);
+    color: var(--text-primary);
+}
+
+.profile-dropdown-menu .dropdown-item.text-danger:hover {
+    background-color: #fef2f2;
+    color: #b91c1c !important;
+}
+
+.dropdown-menu {
+    background-color: var(--bg-card) !important;
+    border-color: var(--border-color) !important;
+}
+.dropdown-item {
+    color: var(--text-secondary) !important;
+}
+.dropdown-item:hover, .dropdown-item.active {
+    background-color: var(--dropdown-hover) !important;
+    color: var(--text-primary) !important;
+}
+
+.dropdown-divider {
+    border-color: var(--border-color) !important;
+}
+
+.alert {
+    background-color: var(--bg-card) !important;
+    border-color: var(--border-color) !important;
+    color: var(--text-primary) !important;
+}
+
+@media (max-width: 992px) {
+    .sidebar { left: -260px; }
+    .sidebar.show-mobile { left: 0; }
+    .main-content { margin-left: 0 !important; }
+}

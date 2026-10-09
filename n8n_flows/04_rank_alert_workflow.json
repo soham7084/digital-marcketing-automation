@@ -1,0 +1,72 @@
+{
+  "name": "Rank Alert Engine Workflow (Docker Ready)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "rank_alert",
+        "options": {}
+      },
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        100,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://host.docker.internal/fluanc/api/business_ranking_alert/get_n8n_business_ranking.php",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"user_id\": {{$json.body.user_id}}\n}",
+        "options": {}
+      },
+      "name": "Fetch Business Rankings",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        320,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Analyze fluctuations and alert triggers\nconst items = $input.all();\nconst triggerId = $('Webhook').first().json.body.trigger_id;\n\nreturn items.map(item => {\n  const row = item.json;\n  return {\n    json: {\n      trigger_id: triggerId,\n      keyword: row.keyword,\n      status: row.status,\n      priority: row.priority,\n      alert_triggered: row.priority >= 4,\n      alert_message: `Alert logged for keyword '${row.keyword}': Current status ${row.status}`\n    }\n  };\n});"
+      },
+      "name": "Process Rank Alerts",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        540,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Fetch Business Rankings",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Business Rankings": {
+      "main": [
+        [
+          {
+            "node": "Process Rank Alerts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}
